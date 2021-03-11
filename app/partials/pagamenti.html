@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 tab-pane fade in active" id="dispo" data-ng-controller="payController">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="panel text-center bg-blue">
+                <h1 class="panel-heading" style="color:white;">CONFERMA INSERIMENTO ISCRIZIONE</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-left:0px;padding-right:0px;">
+        <div class="col-xs-12 col-md-12 col-lg-12 box-attivita">
+
+            <!-- attivita in corso -->
+            <div class="panel panel-default text-center panel-box">
+                
+                    <div class="panel-heading col-md-12 col-xs-12" style="margin-right: 0px;">
+                        <h3>Carissimo/Carissima</h3><br />
+						<h3 data-ng-show="type==0">TI CONFERMIAMO IL NUMERO DI ISCRIZIONE: {{idce}}</h3><br />
+						<h3 data-ng-show="type==4">TI CONFERMIAMO LE ISCRIZIONI: {{idce}}</h3><br />
+						<h3 data-ng-show="type!=0 && type!=4">TI CONFERMIAMO LA REGISTRAZIONE ALLA SETTIMANA: {{idweek}}</h3><br />
+					</div>
+                    <div class="panel-body col-xs-12 col-md-12" data-ng-show="!tesserato">
+						<h3>ANCORA UN ULTIMO PASSO E CI SIAMO!</h3><br />
+                        <h3 style="margin-top:-10px;">Totale da pagare</h3><br />
+                        <i class="fa fa-euro fa-3x"> {{amount}}</i>
+                    </div>
+					<div class="panel panel-default col-xs-12 col-md-12 text-center panel-box" data-ng-show="!tesserato">
+						<h3>PAGA CON BONIFICO BANCARIO</h3><br />
+						<P><strong>IBAN:</strong> IT68G0200830830000100919173</p>
+						<p><strong>INTESTATO A:</strong> VERDE LAURO FIORITO SOCIETA SPORTIVA DILETTANTISTICA A.R.L.</p>
+						<p data-ng-show="type==0"><strong>INSERISCI NELLE NOTE:</strong> PAGAMENTO ISCRIZIONE N. {{idce}}</p>
+						<p data-ng-show="type==4"><strong>INSERISCI NELLE NOTE:</strong> PAGAMENTO ISCRIZIONI N. {{idce}}</p>
+						<p data-ng-show="type!=0 && type!=4"><strong>INSERISCI NELLE NOTE:</strong> PAGAMENTO SETTIMANA {{idweek}}</p>
+						<h3><strong>Solo per i pagamenti tramite Bonifico Bancario,<br />si prega di inviare email con ricevuta pagamento a:<br /> <a href="mailto:momycentriestivi@gmail.com">momycentriestivi@gmail.com</a>, con oggetto PAGAMENTO ISCRIZIONE N. {{idce}}<strong></h3>
+                    </div>
+					<div class="panel-body col-xs-12 col-md-12" data-ng-show="tesserato">
+						<h3>TOTALE DA REGOLARE CON INTESA SAN PAOLO:</h3><br />
+                        <i class="fa fa-euro fa-3x"> {{amount}}</i>
+                    </div>
+					
+					 <div class="col-xs-12 col-md-12 box-attivita" data-ng-show="amount !== 0 && !tesserato">
+						<div class="panel panel-default text-center panel-box"> 
+							<i class="fa fa-credit-card fa-2x"> *Paga sicuro con tecnologia Paypal</i>
+								<div id="paypal-button-container"></div>
+						</div>
+					</div>
+
+					<!--div class="panel-heading col-md-12 col-xs-12" data-ng-show="type==2">
+						<h3>DECIDI COME PAGARE ACCONTO O SALDO?</h3>
+							<div class="col-xs-5 col-md-6">
+								<label><input class="form-control bg-white" name="amount" data-ng-model="amount" style="width:20px;" type="radio" value="30" data-ng-change="setAmount(30)"><h4>&nbsp;ACCONTO: &euro; 30</h4></label>
+							</div>
+							<div class="col-xs-5 col-md-3">
+								<label><input class="form-control bg-white" name="amount" data-ng-model="amount" style="width:20px;" type="radio" value="{{weekamount}}" ng-checked="true"><h4>&nbsp;SALDO: &euro; {{weekamount}}</h4></label>
+							</div>
+						
+                    </div-->
+				<div class="panel panel-default col-xs-12 col-md-12" data-ng-show="type==0">
+										
+					<h3 class="text-center">SETTIMANE PRENOTATE</h3>
+					<div class="text-center" data-ng-repeat="date in weeks track by $index">
+						
+							<label for="date" class="lead mark" data-ng-show="date.tipo == 'S'">
+								<strong>{{date.idweek}} - {{date.cedescweek.description}} - TIPO PAGAMENTO: SALDO - TOTALE DA PAGARE {{date.amount}}</strong>
+							</label>
+							<label for="date" class="lead mark" data-ng-show="date.tipo == 'A'">
+								<strong>{{date.idweek}} - {{date.cedescweek.description}} - TIPO PAGAMENTO: ACCONTO - TOTALE DA PAGARE {{date.amount}}</strong>
+							</label>
+					</div>
+				</div>
+				<div class="panel panel-default col-xs-12 col-md-12" data-ng-show="type==4">
+							<h3 class="text-center">DESCRIZIONE SERVIZI ACQUISTATI:</h3>
+					<ul class="list-group" ng-repeat="isc in multiIscritti track by $index">
+						
+						<h3 class="text-center">ISCRIZIONE: {{isc.cei.id}}</h3>
+						<label for="date" class="lead mark">
+								<strong>NOME: {{isc.cei.name}} - COGNOME: {{isc.cei.lastname}} - CF: {{isc.cei.cf}}</strong>
+						</label>
+						<h3 class="text-center">SETTIMANE PRENOTATE:</h3>
+						<div class="list-group-item text-center" ng-repeat="week in isc.ceiweeks track by $index">
+							
+								
+									<label for="date" class="lead mark" data-ng-show="week.tipo == 'S'">
+										<strong>{{week.idweek}} - {{week.cedescweek.description}} - TIPO PAGAMENTO: SALDO - TOTALE DA PAGARE {{week.amount}}</strong>
+									</label>
+									<label for="date" class="lead mark" data-ng-show="week.tipo == 'A'">
+										<strong>{{week.idweek}} - {{week.cedescweek.description}} - TIPO PAGAMENTO: ACCONTO - TOTALE DA PAGARE {{week.amount}}</strong>
+									</label>
+							
+						</div>
+					</ul>	
+				</div>
+            </div>
+
+        </div>
+		
+</div>
+<script>
+	ga('send', {
+		'hitType': 'pageview',
+		'page': '/summervillage.html#/pagamenti',
+		'title': 'Pagamenti'
+	});
+</script>
+
+
+<script>
+        
+    var databook = 'Saldo Prenotazione:' + window.sessionStorage.id + ' settimana:' + window.sessionStorage.idweeks + ' Per: ' + window.sessionStorage.lastname + ' ' + window.sessionStorage.name; 
+		
+	var custom = window.sessionStorage.id + '|' + window.sessionStorage.idweeks + '|' + window.sessionStorage.email + '|' + window.sessionStorage.mobile + '|' + window.sessionStorage.name + '|' + window.sessionStorage.lastname ; 
+    var amount =parseInt(window.sessionStorage.cost,10);
+    console.log(databook);
+    console.log(custom);
+    console.log(amount);
+        // Render the PayPal button
+    
+        paypal.Button.render({
+    
+            // Set your environment
+    
+            env: 'production', // sandbox | production
+
+            locale: 'it_IT',
+    
+            // Specify the style of the button
+    
+            style: {
+                layout: 'vertical',  // horizontal | vertical
+                size:   'medium',    // medium | large | responsive
+                shape:  'pill',      // pill | rect
+                color:  'blue'       // gold | blue | silver | black
+            },
+    
+            // Specify allowed and disallowed funding sources
+            //
+            // Options:
+            // - paypal.FUNDING.CARD
+            // - paypal.FUNDING.CREDIT
+            // - paypal.FUNDING.ELV
+    
+            funding: {
+                allowed: [ paypal.FUNDING.CARD ],
+                disallowed: [paypal.FUNDING.CREDIT ]
+            },
+    
+            // PayPal Client IDs - replace with your own
+            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+            //AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R
+            client: {
+                sandbox:    'AXBGjanfgpiJFy7MdjqW9Lh30glwrxh3rBVD-JsNBYEQ-xb_2E-NKEMx9f0DwXBLKYEO8B4iMO5nYsAE',
+                production: 'AWItegbNIIeLpxnF7MEqcIqBT8Pbs3c6s1pzTz20s_8Q1s2Byokzrlg1U9uA9dutR2A6loiQweYTsFZs'
+            },
+    
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                "amount": {
+                                            "total": amount,
+                                            "currency": "EUR"                                                    
+                                },
+                                "description": databook,
+                                "custom": custom
+                            }
+                            ],
+                            "redirect_urls": {
+                            "return_url": "http://localhost:82/summervillage.html#/pagamento"
+                            }
+                    },
+                    experience: {
+                        input_fields: {
+                            no_shipping: 1
+                        }
+                    }
+                });
+            },
+            commit: true,
+            onAuthorize: function(data, actions) {
+                // Get the payment details
+                                return actions.payment.execute().then(function(data) {
+                                    // Show a success page to the buyer
+                                    console.log(data);
+                                    angular.element(document.getElementById('dispo')).scope().setbook(data); 
+                                });                
+            },
+
+            onCancel: function(data, actions) {
+                // Show a cancel page or return to cart
+                return window.location = "http://localhost:82/summervillage.html#/pagamento";
+            },
+
+            onError: function(err) {
+                // Show an error page here, when an error occurs
+                return window.location = "http://localhost:82/summervillage.html#/pagamento"
+            }
+    
+        }, '#paypal-button-container');
+ 
+    </script>

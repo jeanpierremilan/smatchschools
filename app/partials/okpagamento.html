@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 tab-pane fade in active" id="dispo" data-ng-init="sendConfirmation()" data-ng-controller="payController">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="panel text-center bg-blue">
+                <h1 class="attivita-header" style="color:white;">CONFERMA PAGAMENTO</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-left:0px;padding-right:0px;">
+        <div class="col-xs-12 col-md-12 col-lg-12 box-attivita">
+            <div class="panel panel-default text-center panel-box">
+			<div class="panel-heading col-md-12 col-lg-12" style="margin-right: 0px;">
+                        <h3>Controlla la mail che hai inserito per il pagamento: {{email}}</h3>
+						
+                    </div>
+			
+                <div class="panel-body">
+                    <h3>Se hai inserito correttamente il tuo numero di telefono, <br />riceverai a breve un sms di conferma pagamento al numero: {{phone}}</h3>
+                    <div class="col-md-12">
+                        <h3>Totale pagato:</h3> <i class="fa fa-euro fa-3x">{{mc_gross}}</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- script>
+    var sku = $('[data-ng-controller="payController"]').scope().day + '-' + $('[data-ng-controller="payController"]').scope().time + '-' + $('[data-ng-controller="payController"]').scope().field_id;
+dataLayer = [{
+    'transactionId': $('[data-ng-controller="payController"]').scope().token,
+    'transactionAffiliation': 'Momy bookings',
+    'transactionTotal': $('[data-ng-controller="payController"]').scope().amount,
+    'transactionTax': $('[data-ng-controller="payController"]').scope().amount * 0.05,
+    'transactionShipping': 0,
+    'transactionProducts': [{
+        'sku': sku,
+        'name': $('[data-ng-controller="payController"]').scope().game,
+        'category': 'Tennis',
+        'price': $('[data-ng-controller="payController"]').scope().amount,
+        'quantity': 1
+    }]
+}];
+</script -->
+<script>
+	ga('send', {
+		'hitType': 'pageview',
+		'page': '/summervillage.html#/okpagamento',
+		'title': 'Ok Pagamento'
+	});
+</script>
+  <!-- Google Tag Manager -->
+       
+        <script>(function(w, d, s, l, i) {
+                        w[l] = w[l] || [];
+                        w[l].push({'gtm.start':
+                                    new Date().getTime(), event: 'gtm.js'});
+                        var f = d.getElementsByTagName(s)[0],
+                                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                        j.async = true;
+                        j.src =
+                                '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+                        f.parentNode.insertBefore(j, f);
+                    })(window, document, 'script', 'dataLayer', 'GTM-WP9RR3');</script>
+        <!-- End Google Tag Manager -->

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 tab-pane fade in active" id="dispo" data-ng-controller="payController">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="panel text-center bg-blue">
+                <h1 class="panel-heading" style="color:white;">CONFERMA INSERIMENTO ISCRIZIONE</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-left:0px;padding-right:0px;">
+        <div class="col-xs-12 col-md-12 col-lg-12 box-attivita">
+
+            <!-- attivita in corso -->
+            <div class="panel panel-default text-center panel-box">
+                
+                    <div class="panel-heading col-md-12 col-lg-12" style="margin-right: 0px;">
+                        <h3>Caro {{name}}</h3><br />
+						<h3>TI CONFERMIAMO L'SCRIZIONE ALLA SETTIMANA: {{desc}}</h3><br />
+
+                    </div>
+                    <div class="panel-body col-md-12">
+						<h3>ANCORA UN ULTIMO PASSO E CI SIAMO!</h3><br />
+                        <h3 style="margin-top:-10px;">Totale da pagare</h3><br />
+                        <i class="fa fa-euro fa-3x"> {{amount}}</i>
+                    </div>
+                
+            </div>
+
+        </div>
+
+
+        <div class="panel panel-danger" data-ng-show="!tesserato">
+					<!-- div class="panel-heading text-center col-md-12 col-xs-12" style="margin-top:20px;">
+						<h4>PAGAMENTO CON CARTA DI CREDITO SOLO PER I CLIENTI NON CONVENZIONATI SAN PAOLO</h4>
+                    </div -->
+            <div class="col-xs-12 col-md-12 box-attivita" data-ng-show="amount !== 0">
+                <div class="panel panel-default text-center panel-box"> 
+                    <i class="fa fa-credit-card fa-2x"> *Paga sicuro con tecnologia Paypal</i>
+                        <div id="paypal-button-container"></div>
+                </div>
+            </div>
+		</div>
+        <div class="col-xs-12 col-md-12 box-attivita" data-ng-if="scredit < 400">
+            <div class="panel panel-default text-center panel-box"> 
+                <i class="fa fa-money fa-2x"> Paga direttamente al Circolo</i>
+                <div class="panel-body">
+                    <div class="row">
+                        <!-- div class="col-xs-6 text-right">
+                            <i class="fa fa-euro fa-3x"> {{totalvirtualcards}} 50</i>
+                        </div -->
+                        <div class="col-xs-12">
+                            <button type="submit" class=" text-center btn-lg button-pay Semibold14" style="width:100%;" data-ng-click="payBook('')"> Conferma Prenotazione</button> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        
+    var databook = 'Saldo Prenotazione:' + window.sessionStorage.idce + ' settimana:' + window.sessionStorage.idweek + ' Per: ' + window.sessionStorage.lastname + ' ' + window.sessionStorage.name; 
+    var custom = window.sessionStorage.token;; 
+    var amount =parseInt(window.sessionStorage.cost,10);
+    console.log(databook);
+    console.log(custom);
+    console.log(amount);
+        // Render the PayPal button
+    
+        paypal.Button.render({
+    
+            // Set your environment
+    
+            env: 'sandbox', // sandbox | production
+
+            locale: 'it_IT',
+    
+            // Specify the style of the button
+    
+            style: {
+                layout: 'vertical',  // horizontal | vertical
+                size:   'medium',    // medium | large | responsive
+                shape:  'pill',      // pill | rect
+                color:  'blue'       // gold | blue | silver | black
+            },
+    
+            // Specify allowed and disallowed funding sources
+            //
+            // Options:
+            // - paypal.FUNDING.CARD
+            // - paypal.FUNDING.CREDIT
+            // - paypal.FUNDING.ELV
+    
+            funding: {
+                allowed: [ paypal.FUNDING.CARD ],
+                disallowed: [paypal.FUNDING.CREDIT ]
+            },
+    
+            // PayPal Client IDs - replace with your own
+            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+            //AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R
+            client: {
+                sandbox:    'AXBGjanfgpiJFy7MdjqW9Lh30glwrxh3rBVD-JsNBYEQ-xb_2E-NKEMx9f0DwXBLKYEO8B4iMO5nYsAE',
+                production: 'AWItegbNIIeLpxnF7MEqcIqBT8Pbs3c6s1pzTz20s_8Q1s2Byokzrlg1U9uA9dutR2A6loiQweYTsFZs'
+            },
+    
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                "amount": {
+                                            "total": 1,
+                                            "currency": "EUR"                                                    
+                                },
+                                "description": databook,
+                                "custom": custom
+                            }
+                            ],
+                            "redirect_urls": {
+                            "return_url": "https://portal.smatchfe.club//summervillage.html#/pagamento"
+                            }
+                    },
+                    experience: {
+                        input_fields: {
+                            no_shipping: 1
+                        }
+                    }
+                });
+            },
+            commit: true,
+            onAuthorize: function(data, actions) {
+                // Get the payment details
+                                return actions.payment.execute().then(function(data) {
+                                    // Show a success page to the buyer
+                                    console.log(data);
+                                    angular.element(document.getElementById('dispo')).scope().setbook(data); 
+                                });                
+            },
+
+            onCancel: function(data, actions) {
+                // Show a cancel page or return to cart
+                //return window.location = "http://localhost:81/personalAreaDyn.html#/pagamento";
+            },
+
+            onError: function(err) {
+                // Show an error page here, when an error occurs
+                //return window.location = "http://localhost:81/personalAreaDyn.html#/pagamento"
+            }
+    
+        }, '#paypal-button-container');
+ 
+    </script>
+

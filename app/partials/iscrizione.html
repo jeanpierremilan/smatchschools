@@ -1,0 +1,137 @@
+
+	<div id="main-wrap" data-ng-controller="pageController">
+      
+	  
+				
+		<div class="panel panel-primary">
+					<div class="panel-heading col-md-12 col-xs-12" style="margin-top:20px;">
+						<h3>Dichiara di voler partecipare al Corso Adulti</h3>
+						<div class="col-xs-12 col-md-3">
+							<label><input class="form-control bg-white" name="tipocorso" data-ng-model="userdata.tipocorso" style="width:20px;" type="radio" value="0">&nbsp;PRINCIPIANTI - &euro; 150</label>
+						</div>
+						<div class="col-xs-12 col-md-3">
+                            <label><input class="form-control bg-white" name="tipocorso" data-ng-model="userdata.tipocorso" style="width:20px;" type="radio" value="1">&nbsp;PERFEZIONAMENTO - &euro; 150</label>
+                        </div>
+                        <div class="col-xs-12 col-md-3">
+                             <label><input class="form-control bg-white" name="tipocorso" data-ng-model="userdata.tipocorso" style="width:20px;" type="radio" value="2">&nbsp;PERF. AVANZATO - &euro; 200</label>
+                        </div> 
+					</div>
+					
+					<div class="panel-body col-xs-12 col-md-12 bg-white">
+					<h5>Tutti i campi sono obbligatori</h5>
+						<div class="form-group col-md-12 col-xs-12" style="margin-top:20px;padding:0;">
+								<div class="col-xs-4 col-md-1" >
+									<label for="nome">NOME</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.name" placeholder="NOME" required>
+								</div> 
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">COGNOME</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.lastname" placeholder="COGNOME" required>
+								</div> 
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">NATO A</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.natoa" placeholder="COMUNE DI NASCITA" required>
+								</div> 
+								</div>
+						<div class="form-group col-md-12 col-xs-12" style="padding:0;">
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">NATO IL</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" maxlength="8" pattern="[0-9]{8}" style="margin-bottom: 10px;" data-ng-model="userdata.natoil" placeholder="GGMMAAAA" required>
+								</div> 
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">RESIDENTE A</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.residentea" placeholder="COMUNE DI RESIDENZA" required>
+								</div>                               
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">VIA</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.address" placeholder="INDIRIZZO" required>
+								</div>                               
+						</div>				
+						
+						<div class="form-group col-md-12 col-xs-12" style="padding:0;">
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">CAP</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="text" maxlength="5" pattern="[0-9]{5}" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.cap" placeholder="CAP" required>
+								</div> 
+								<div class="col-xs-4 col-md-1" >
+									<label for="nome">*TELEFONO</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									 <input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.mobile" placeholder="TELEFONO" required>
+								</div>
+								<div class="col-xs-4 col-md-1">
+									<label for="nome">*EMAIL</label>
+								</div>
+								<div class="col-xs-8 col-md-2">
+									<input type="email" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.email" placeholder="EMAIL" required>
+								</div> 
+						</div>	
+						
+						<h6>*INSERISCI CORRETTAMENTE I TUOI RECAPITI, TI INVIEREMO LA CONFERMA A FINE REGISTRAZIONE</h6>
+						
+							
+						<div class="col-xs-12 col-md-12">	
+							<div class="col-xs-12 col-md-12" style="margin-top:20px;padding:0;">
+								<h4>SCEGLI LA DATA DEL CORSO</h4>
+							</div>
+							<div class="col-xs-12 col-md-6">
+							<select class="form-control" data-ng-model="userdata.dateid" style="color:black;" required data-ng-change="setpref(userdata.dateid)">
+									<option value="" selected="">-- Seleziona --</option>
+									<option data-ng-repeat="date in dates |orderBy: 'id'"
+											value="{{date.id}}">
+										{{date.day| uppercase}} - {{date.desc| uppercase}}
+									</option>
+								</select>
+							</div>
+							<div class="col-xs-12 col-md-12" data-ng-show="pref">
+								<h4>PREFERENZA GIORNO E ORA</h4>
+							</div>
+							<div class="col-xs-3 col-md-2" data-ng-show="dayweek==1">
+								<label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="1" ng-checked="dayweek==1">&nbsp;LUNEDI</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==2">
+								 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="2" ng-checked="dayweek==2">&nbsp;MARTEDI</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==3">
+								 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="3" ng-checked="dayweek==3">&nbsp;MERCOLEDI</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==4">
+								 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="4" ng-checked="dayweek==4">&nbsp;GIOVEDI</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==5">
+							 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="5" ng-checked="dayweek==5">&nbsp;VENERDI</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==6">
+								 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="6" ng-checked="dayweek==6">&nbsp;SABATO</label>
+							</div>
+							<div class="col-xs-4 col-md-2" data-ng-show="dayweek==7">
+							 <label><input class="form-control" data-ng-model="userdata.dayweek" style="width:20px;" type="checkbox" value="7" ng-checked="dayweek==7">&nbsp;DOMENICA</label>
+							</div>
+							<div class="col-xs-5 col-md-4" data-ng-show="pref">
+								<input type="text" class="form-control" style="margin-bottom: 10px;" data-ng-model="userdata.timeweek" placeholder="DALLE-ALLE" >
+							</div> 
+						</div>
+					</div>
+						
+				
+					<br /><br />
+					<div class="text-center btn bg-red col-xs-12 col-md-12"
+						 type="button" style="height:100px;width:100%;" data-ng-click="insert(userdata)">
+						 <p><h2>Inserisci&nbsp;<i class="fa fa-paper-plane"></i></h2></p>
+					</div>
+		</div>
+	</div>
